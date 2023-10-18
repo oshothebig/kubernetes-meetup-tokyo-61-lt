@@ -1,0 +1,7 @@
+tunnel: disabled
+ipv4NativeRoutingCIDR: 10.244.0.0/16
+MTU: 9000
+ipam:
+  mode: kubernetes
+operator:
+  replicas: 1

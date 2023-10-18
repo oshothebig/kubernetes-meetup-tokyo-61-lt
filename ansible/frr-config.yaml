@@ -1,0 +1,26 @@
+- hosts: spines
+  gather_facts: false
+  tasks:
+  - name: Render FRR config
+    ansible.builtin.template:
+      src: frr-spine.conf.j2
+      dest: "../frr/{{ inventory_hostname }}.conf"
+    delegate_to: localhost
+
+- hosts: leaves
+  gather_facts: false
+  tasks:
+  - name: Render FRR config
+    ansible.builtin.template:
+      src: frr-leaf.conf.j2
+      dest: "../frr/{{ inventory_hostname }}.conf"
+    delegate_to: localhost
+
+- hosts: hosts
+  gather_facts: false
+  tasks:
+  - name: Render FRR config
+    ansible.builtin.template:
+      src: frr-host.conf.j2
+      dest: "../frr/{{ inventory_hostname }}.conf"
+    delegate_to: localhost

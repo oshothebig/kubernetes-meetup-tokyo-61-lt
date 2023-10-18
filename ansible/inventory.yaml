@@ -1,0 +1,42 @@
+all:
+  children:
+    spines:
+      hosts:
+        spine0:
+          loopback: 10.0.0.0
+          asn: 65000
+        spine1:
+          loopback: 10.0.0.1
+          asn: 65001
+    leaves:
+      hosts:
+        leaf0:
+          loopback: 10.4.0.0
+          asn: 65016
+        leaf1:
+          loopback: 10.4.0.1
+          asn: 65017
+        leaf2:
+          loopback: 10.4.0.2
+          asn: 65018
+        leaf3:
+          loopback: 10.4.0.3
+          asn: 65019
+    hosts:
+      hosts:
+        host0:
+          loopback: 10.16.0.0
+          asn: 65256
+          kind_node: kind-control-plane
+        host1:
+          loopback: 10.16.0.1
+          asn: 65257
+          kind_node: kind-worker
+        host2:
+          loopback: 10.16.0.2
+          asn: 65258
+          kind_node: kind-worker2
+        host3:
+          loopback: 10.16.0.3
+          asn: 65259
+          kind_node: kind-worker3

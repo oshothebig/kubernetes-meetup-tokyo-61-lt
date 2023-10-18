@@ -1,0 +1,126 @@
+name: ipclos
+prefix: __lab-name
+
+topology:
+  nodes:
+    # 2 spine switches
+    spine0:
+      kind: linux
+      image: quay.io/frrouting/frr:9.0.0
+      binds:
+      - vtysh.conf:/etc/frr/vtysh.conf
+      - daemons:/etc/frr/daemons
+      - frr/spine0.conf:/etc/frr/frr.conf
+      exec:
+      - ip addr add 10.0.0.0/32 dev lo
+    spine1:
+      kind: linux
+      image: quay.io/frrouting/frr:9.0.0
+      binds:
+      - vtysh.conf:/etc/frr/vtysh.conf
+      - daemons:/etc/frr/daemons
+      - frr/spine1.conf:/etc/frr/frr.conf
+      exec:
+      - ip addr add 10.0.0.1/32 dev lo
+    # 4 leaf switches
+    leaf0:
+      kind: linux
+      image: quay.io/frrouting/frr:9.0.0
+      binds:
+      - vtysh.conf:/etc/frr/vtysh.conf
+      - daemons:/etc/frr/daemons
+      - frr/leaf0.conf:/etc/frr/frr.conf
+      exec:
+      - ip addr add 10.4.0.0/32 dev lo
+    leaf1:
+      kind: linux
+      image: quay.io/frrouting/frr:9.0.0
+      binds:
+      - vtysh.conf:/etc/frr/vtysh.conf
+      - daemons:/etc/frr/daemons
+      - frr/leaf1.conf:/etc/frr/frr.conf
+      exec:
+      - ip addr add 10.4.0.1/32 dev lo
+    leaf2:
+      kind: linux
+      image: quay.io/frrouting/frr:9.0.0
+      binds:
+      - vtysh.conf:/etc/frr/vtysh.conf
+      - daemons:/etc/frr/daemons
+      - frr/leaf2.conf:/etc/frr/frr.conf
+      exec:
+      - ip addr add 10.4.0.2/32 dev lo
+    leaf3:
+      kind: linux
+      image: quay.io/frrouting/frr:9.0.0
+      binds:
+      - vtysh.conf:/etc/frr/vtysh.conf
+      - daemons:/etc/frr/daemons
+      - frr/leaf3.conf:/etc/frr/frr.conf
+      exec:
+      - ip addr add 10.4.0.3/32 dev lo
+
+    # 4 hosts
+    host0:
+      kind: linux
+      image: quay.io/frrouting/frr:9.0.0
+      network-mode: container:kind-control-plane
+      binds:
+      - vtysh.conf:/etc/frr/vtysh.conf
+      - daemons:/etc/frr/daemons
+      - frr/host0.conf:/etc/frr/frr.conf
+      exec:
+      - ip addr add 10.16.0.0/32 dev lo
+    host1:
+      kind: linux
+      image: quay.io/frrouting/frr:9.0.0
+      network-mode: container:kind-worker
+      binds:
+      - vtysh.conf:/etc/frr/vtysh.conf
+      - daemons:/etc/frr/daemons
+      - frr/host1.conf:/etc/frr/frr.conf
+      exec:
+      - ip addr add 10.16.0.1/32 dev lo
+    host2:
+      kind: linux
+      image: quay.io/frrouting/frr:9.0.0
+      network-mode: container:kind-worker2
+      binds:
+      - vtysh.conf:/etc/frr/vtysh.conf
+      - daemons:/etc/frr/daemons
+      - frr/host2.conf:/etc/frr/frr.conf
+      exec:
+      - ip addr add 10.16.0.2/32 dev lo
+    host3:
+      kind: linux
+      image: quay.io/frrouting/frr:9.0.0
+      network-mode: container:kind-worker3
+      binds:
+      - vtysh.conf:/etc/frr/vtysh.conf
+      - daemons:/etc/frr/daemons
+      - frr/host3.conf:/etc/frr/frr.conf
+      exec:
+      - ip addr add 10.16.0.3/32 dev lo
+
+  links:
+  # from spine0 to leaf switches
+  - endpoints: ["spine0:eth1", "leaf0:eth1"]
+  - endpoints: ["spine0:eth2", "leaf1:eth1"]
+  - endpoints: ["spine0:eth3", "leaf2:eth1"]
+  - endpoints: ["spine0:eth4", "leaf3:eth1"]
+
+  # from spine1 to leaf switches
+  - endpoints: ["spine1:eth1", "leaf0:eth2"]
+  - endpoints: ["spine1:eth2", "leaf1:eth2"]
+  - endpoints: ["spine1:eth3", "leaf2:eth2"]
+  - endpoints: ["spine1:eth4", "leaf3:eth2"]
+
+  # host to leaf switch
+  - endpoints: ["leaf0:eth3", "host0:eth1"]
+    mtu: 9000
+  - endpoints: ["leaf1:eth3", "host1:eth1"]
+    mtu: 9000
+  - endpoints: ["leaf2:eth3", "host2:eth1"]
+    mtu: 9000
+  - endpoints: ["leaf3:eth3", "host3:eth1"]
+    mtu: 9000

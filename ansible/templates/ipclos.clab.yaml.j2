@@ -1,0 +1,62 @@
+name: ipclos
+prefix: __lab-name
+
+{% set spines = groups["spines"] %}
+topology:
+  nodes:
+    # {{ spines | length }} spine switches
+{% for spine in spines %}
+    {{ spine }}:
+      kind: linux
+      image: quay.io/frrouting/frr:9.0.0
+      binds:
+      - vtysh.conf:/etc/frr/vtysh.conf
+      - daemons:/etc/frr/daemons
+      - frr/{{ spine }}.conf:/etc/frr/frr.conf
+      exec:
+      - ip addr add {{ hostvars[spine].loopback }}/32 dev lo
+{% endfor %}
+{% set leaves = groups["leaves"] %}
+    # {{ leaves | length }} leaf switches
+{% for leaf in leaves %}
+    {{ leaf }}:
+      kind: linux
+      image: quay.io/frrouting/frr:9.0.0
+      binds:
+      - vtysh.conf:/etc/frr/vtysh.conf
+      - daemons:/etc/frr/daemons
+      - frr/{{ leaf }}.conf:/etc/frr/frr.conf
+      exec:
+      - ip addr add {{ hostvars[leaf].loopback }}/32 dev lo
+{% endfor %}
+
+{% set hosts = groups["hosts"] %}
+    # {{ hosts | length }} hosts
+{% for host in hosts %}
+    {{ host }}:
+      kind: linux
+      image: quay.io/frrouting/frr:9.0.0
+      network-mode: container:{{ hostvars[host].kind_node }}
+      binds:
+      - vtysh.conf:/etc/frr/vtysh.conf
+      - daemons:/etc/frr/daemons
+      - frr/{{ host }}.conf:/etc/frr/frr.conf
+      exec:
+      - ip addr add {{ hostvars[host].loopback }}/32 dev lo
+{% endfor %}
+
+  links:
+{% for spine in spines %}
+  # from {{ spine }} to leaf switches
+  {% set spine_loop = loop %}
+  {% for leaf in leaves %}
+    {% set leaf_loop = loop %}
+  - endpoints: ["{{ spine }}:eth{{ leaf_loop.index }}", "{{ leaf }}:eth{{ spine_loop.index }}"]
+  {% endfor %}
+
+{% endfor %}
+  # host to leaf switch
+{% for leaf in leaves %}
+  - endpoints: ["{{ leaf }}:eth{{ (spines | length) + 1 }}", "host{{ loop.index0 }}:eth1"]
+    mtu: 9000
+{% endfor %}

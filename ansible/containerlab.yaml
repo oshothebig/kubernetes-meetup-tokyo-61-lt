@@ -1,0 +1,10 @@
+- hosts: all
+  gather_facts: false
+  tasks:
+  - name: Render containerlab's topology file
+    ansible.builtin.template:
+      src: templates/ipclos.clab.yaml.j2
+      dest: ../ipclos.clab.yaml
+      lstrip_blocks: true
+    run_once: true
+    delegate_to: localhost
