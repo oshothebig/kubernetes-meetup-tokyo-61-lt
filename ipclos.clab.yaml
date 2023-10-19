@@ -118,9 +118,21 @@ topology:
   # host to leaf switch
   - endpoints: ["leaf0:eth3", "host0:eth1"]
     mtu: 9000
-  - endpoints: ["leaf1:eth3", "host1:eth1"]
+  - endpoints: ["leaf0:eth4", "host1:eth1"]
     mtu: 9000
+
+  - endpoints: ["leaf1:eth3", "host0:eth2"]
+    mtu: 9000
+  - endpoints: ["leaf1:eth4", "host1:eth2"]
+    mtu: 9000
+
   - endpoints: ["leaf2:eth3", "host2:eth1"]
     mtu: 9000
-  - endpoints: ["leaf3:eth3", "host3:eth1"]
+  - endpoints: ["leaf2:eth4", "host3:eth1"]
     mtu: 9000
+
+  - endpoints: ["leaf3:eth3", "host2:eth2"]
+    mtu: 9000
+  - endpoints: ["leaf3:eth4", "host3:eth2"]
+    mtu: 9000
+

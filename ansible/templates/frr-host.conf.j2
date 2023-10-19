@@ -22,6 +22,7 @@ router bgp {{ asn }}
   bgp router-id {{ loopback }}
   bgp bestpath as-path multipath-relax
   neighbor eth1 interface remote-as external
+  neighbor eth2 interface remote-as external
   address-family ipv4 unicast
     redistribute kernel route-map import-kernel
     redistribute connected route-map import-connected
