@@ -57,6 +57,10 @@ topology:
 {% endfor %}
   # host to leaf switch
 {% for leaf in leaves %}
-  - endpoints: ["{{ leaf }}:eth{{ (spines | length) + 1 }}", "host{{ loop.index0 }}:eth1"]
+  {% set leaf_loop = loop %}
+  {% for host in hosts %}
+  - endpoints: ["{{ leaf }}:eth{{ (spines | length) + loop.index }}", "{{ host }}:eth{{ leaf_loop.index }}"]
     mtu: 9000
+  {% endfor %}
+
 {% endfor %}
