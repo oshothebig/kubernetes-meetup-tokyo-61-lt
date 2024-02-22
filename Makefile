@@ -2,7 +2,7 @@
 deploy:
 	kind create cluster --config kind-config.yaml
 	sudo containerlab deploy
-	cilium install --version v1.13.7 --values values.yaml
+	cilium install --version v1.15.1 --values values.yaml
 	cilium status --wait
 
 .PHONY: destroy
