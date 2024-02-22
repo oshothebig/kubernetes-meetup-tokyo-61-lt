@@ -37,43 +37,40 @@ kind
 
 ```
 $ kind version
-kind v0.20.0 go1.20.4 linux/amd64
+kind v0.22.0 go1.20.13 linux/amd64
 ```
 
 Kubernetes
 ```
-$ kubectl version --short
-Flag --short has been deprecated, and will be removed in the future. The --short output will become the default.
-Client Version: v1.27.1
-Kustomize Version: v5.0.1
-Server Version: v1.27.3
+$ kubectl version
+Client Version: v1.29.2
+Kustomize Version: v5.0.4-0.20230601165947-6ce0bf390ce3
+Server Version: v1.29.2
 ```
 
 containerlab
 
 ```
 $ containerlab version
+  ____ ___  _   _ _____  _    ___ _   _ _____ ____  _       _
+ / ___/ _ \| \ | |_   _|/ \  |_ _| \ | | ____|  _ \| | __ _| |__
+| |  | | | |  \| | | | / _ \  | ||  \| |  _| | |_) | |/ _` | '_ \
+| |__| |_| | |\  | | |/ ___ \ | || |\  | |___|  _ <| | (_| | |_) |
+ \____\___/|_| \_| |_/_/   \_\___|_| \_|_____|_| \_\_|\__,_|_.__/
 
-                           _                   _       _
-                 _        (_)                 | |     | |
- ____ ___  ____ | |_  ____ _ ____   ____  ____| | ____| | _
-/ ___) _ \|  _ \|  _)/ _  | |  _ \ / _  )/ ___) |/ _  | || \
-( (__| |_|| | | | |_( ( | | | | | ( (/ /| |   | ( ( | | |_) )
-\____)___/|_| |_|\___)_||_|_|_| |_|\____)_|   |_|\_||_|____/
-
-    version: 0.46.2
-     commit: 0106f787
-       date: 2023-10-12T10:14:39Z
+    version: 0.51.3
+     commit: f11d4a93
+       date: 2024-02-22T16:17:22Z
      source: https://github.com/srl-labs/containerlab
- rel. notes: https://containerlab.dev/rn/0.46/#0462
+ rel. notes: https://containerlab.dev/rn/0.51/#0513
 ```
 
 Cilium
 
 ```
 $ cilium version
-cilium-cli: v0.15.10 compiled with go1.21.2 on linux/amd64
-cilium image (default): v1.14.2
-cilium image (stable): v1.14.2
-cilium image (running): 1.13.7
+cilium-cli: v0.15.23 compiled with go1.22.0 on linux/amd64
+cilium image (default): v1.15.0
+cilium image (stable): v1.15.1
+cilium image (running): 1.15.1
 ```
