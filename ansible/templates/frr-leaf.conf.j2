@@ -6,12 +6,25 @@ service integrated-vtysh-config
 route-map import-connected permit 10
   match interface lo
 
+route-map to-leaf permit 10
+  match ip address prefix-list pod-cidr
+route-map to-leaf permit 20
+  match ip address prefix-list loopback
+
+ip prefix-list pod-cidr seq 5 permit 10.244.0.0/16 le 24
+ip prefix-list loopback seq 5 permit 10.16.0.0/24 le 32
+
 router bgp {{ asn }}
   bgp router-id {{ loopback }}
   bgp bestpath as-path multipath-relax
-  neighbor eth1 interface remote-as external
-  neighbor eth2 interface remote-as external
-  neighbor eth3 interface remote-as external
-  neighbor eth4 interface remote-as external
+  neighbor spine peer-group
+  neighbor eth1 interface peer-group spine
+  neighbor eth2 interface peer-group spine
+  neighbor host peer-group
+  neighbor eth3 interface peer-group host
+  neighbor eth4 interface peer-group host
+  neighbor spine remote-as external
+  neighbor host remote-as external
   address-family ipv4 unicast
     redistribute connected route-map import-connected
+    neighbor host route-map to-leaf out

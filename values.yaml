@@ -5,3 +5,5 @@ ipam:
   mode: kubernetes
 operator:
   replicas: 1
+bgpControlPlane:
+  enabled: true
